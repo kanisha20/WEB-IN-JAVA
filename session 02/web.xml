@@ -1,0 +1,21 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         version="5.0">
+
+    <servlet>
+        <servlet-name>WelcomeUserServlet</servlet-name>
+        <servlet-class>com.example.WelcomeUserServlet</servlet-class>
+
+        <init-param>
+            <param-name>appName</param-name>
+            <param-value>MyWebApp</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>WelcomeUserServlet</servlet-name>
+        <url-pattern>/welcomeuser</url-pattern>
+    </servlet-mapping>
+
+</web-app>
