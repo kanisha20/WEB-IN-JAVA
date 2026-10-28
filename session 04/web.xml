@@ -1,0 +1,51 @@
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         version="5.0">
+
+    
+    <context-param>
+        <param-name>appTheme</param-name>
+        <param-value>dark</param-value>
+    </context-param>
+
+
+
+    <servlet>
+        <servlet-name>PlaylistServlet</servlet-name>
+        <servlet-class>com.example.PlaylistServlet</servlet-class>
+
+        <init-param>
+            <param-name>defaultGenre</param-name>
+            <param-value>Pop</param-value>
+        </init-param>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>PlaylistServlet</servlet-name>
+        <url-pattern>/playlist</url-pattern>
+    </servlet-mapping>
+
+
+    
+    <servlet>
+        <servlet-name>ThemeServlet</servlet-name>
+        <servlet-class>com.example.ThemeServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ThemeServlet</servlet-name>
+        <url-pattern>/theme</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>TrendingSearchServlet</servlet-name>
+        <servlet-class>com.example.TrendingSearchServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>TrendingSearchServlet</servlet-name>
+        <url-pattern>/trending</url-pattern>
+    </servlet-mapping>
+
+</web-app>
