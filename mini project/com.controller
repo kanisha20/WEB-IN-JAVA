@@ -1,0 +1,84 @@
+
+package com.controller;
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+@WebServlet("/RegisterUserServlet")
+public class RegisterUserServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 1L;
+
+    private static final String URL =
+        "jdbc:mysql://localhost:3306/eventdb";
+    private static final String USER = "root";
+    private static final String PASSWORD = "your_password";
+
+    @Override
+    protected void doPost(HttpServletRequest request,
+                          HttpServletResponse response)
+            throws ServletException, IOException {
+
+        request.setCharacterEncoding("UTF-8");
+
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+
+        if (username == null || username.trim().isEmpty()
+                || email == null || email.trim().isEmpty()
+                || password == null || password.length() < 6) {
+
+            request.setAttribute("error",
+                "Enter all fields. Password must have at least 6 characters.");
+
+            request.getRequestDispatcher("/RegisterUser.jsp")
+                   .forward(request, response);
+            return;
+        }
+
+        String sql = "INSERT INTO users (username, email, password) "
+                   + "VALUES (?, ?, ?)";
+
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            try (Connection con = DriverManager.getConnection(
+                        URL, USER, PASSWORD);
+                 PreparedStatement ps = con.prepareStatement(sql)) {
+
+                ps.setString(1, username.trim());
+                ps.setString(2, email.trim());
+                ps.setString(3, password);
+
+                ps.executeUpdate();
+            }
+
+            request.setAttribute("message",
+                "Registration successful! Please log in.");
+
+            request.getRequestDispatcher("/RegisterUser.jsp")
+                   .forward(request, response);
+
+        } catch (SQLException | ClassNotFoundException e) {
+
+            getServletContext().log("User registration failed", e);
+
+            request.setAttribute("error",
+                "Registration failed. The username may already exist, "
+                + "or the database is unavailable.");
+
+            request.getRequestDispatcher("/RegisterUser.jsp")
+                   .forward(request, response);
+        }
+    }
+}
